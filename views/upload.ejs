@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>upload tools</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css" />
+    <link rel="stylesheet" href="/stylesheets/dataTables.bootstrap4.min.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h3 class="text-center mt-5">Upload tool</h3>
+      <div class="row">
+        <div class="myform">
+          <div class="form-group text-center">
+            <div class="row">
+              <div class="col-md-3 col-sm-3">
+                <!-- <input type="text" id="album_name" class="form-control" placeholder="Album Name"> -->
+                <select name="album_name" id="album_name" class="form-control">
+                  <% for(var i=0; i < albumlist.length; i++) {%>
+                  <option value="'<%= albumlist[i] %>'"
+                    ><%= albumlist[i] %></option
+                  >
+                  <%}%>
+                </select>
+              </div>
+              <div class="col-md-6 col-sm-6">
+                <input
+                  type="text"
+                  id="token"
+                  class="form-control"
+                  placeholder="Token"
+                />
+              </div>
+              <div class="col-md-3 col-sm-3">
+                <button class="btn btn-primary" type="button" id="uploaddata">
+                  <img
+                    src="/images/loading.gif"
+                    alt=""
+                    class="loading-gif d-none"
+                    id="uploadimg"
+                  /><span id="uploadtxt">Start to Upload </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="row" id="keyform">
+        <div class="myform">
+          <div class="form-group text-center">
+            <div class="row">
+              <div class="col-md-6">
+                <button class="btn btn-success" type="button" id="pformbtn">
+                  <span id="toggletxt"
+                    >View Permanent and Negative key form</span
+                  >
+                </button>
+              </div>
+              <div class="col-md-6">
+                <a href="/">
+                  <button class="btn btn-danger" type="button">
+                    Back to main page
+                  </button>
+                </a>
+              </div>
+            </div>
+            <br />
+            <div class="row text-center">
+              <div class="col-md-4 col-sm-4">
+                <input
+                  type="text"
+                  id="prop"
+                  class="form-control"
+                  placeholder="Property"
+                />
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <input
+                  type="text"
+                  id="value"
+                  class="form-control"
+                  placeholder="Value"
+                />
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <button class="btn btn-primary" type="button" id="addkeyword">
+                  Add new keyword
+                </button>
+              </div>
+            </div>
+            <br />
+            <div class="row text-center">
+              <div class="col-md-12" id="tableview">
+                <table
+                  class="table table-striped table-bordered"
+                  id="datatable"
+                >
+                  <thead>
+                    <tr>
+                      <th class="text-center">No.</th>
+                      <th class="text-center">Property</th>
+                      <th class="text-center">Value</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(var i=0; i < key.length; i++) { %>
+                    <tr>
+                      <td><%= i+1 %></td>
+                      <td><%= key[i].prop %></td>
+                      <td><%= key[i].value %></td>
+                      <td>
+                        <button
+                          class="btn btn-danger"
+                          type="button"
+                          onclick="deleteitem(`<%=key[i]._id%>`)"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row d-none" id="pform">
+        <div class="myform">
+          <div class="form-group text-center">
+            <div class="row">
+              <div class="col-md-6">
+                <button class="btn btn-success" type="button" id="keyformbtn">
+                  <span id="toggletxt">View keyword form</span>
+                </button>
+              </div>
+              <div class="col-md-6">
+                <a href="/">
+                  <button class="btn btn-danger" type="button">
+                    Back to main page
+                  </button>
+                </a>
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-md-12 col-sm-12"><h4>Permanent Key</h4></div>
+            </div>
+            <br />
+            <div class="row text-center">
+              <div class="col-md-4 col-sm-4">
+                <select name="wxcode" id="wxcode" class="form-control">
+                  <% for(var i=0; i < wxcodelist.length; i++) {%>
+                  <option value="'<%= wxcodelist[i] %>'"
+                    ><%= wxcodelist[i] %></option
+                  >
+                  <%}%>
+                </select>
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <input
+                  type="text"
+                  id="pmtkey"
+                  class="form-control"
+                  placeholder="Permanent key"
+                />
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <button class="btn btn-primary" type="button" id="addpmt">
+                  Add new Permanent Keyword
+                </button>
+              </div>
+            </div>
+            <br />
+            <div class="row text-center">
+              <div class="col-md-12" id="tableview">
+                <table
+                  class="table table-striped table-bordered"
+                  id="pdatatable"
+                >
+                  <thead>
+                    <tr>
+                      <th class="text-center">No.</th>
+                      <th class="text-center">WX-code</th>
+                      <th class="text-center">Permanent Key</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(var i=0; i < pmtkey.length; i++) { %>
+                    <tr>
+                      <td><%= i+1 %></td>
+                      <td><%= pmtkey[i].wxcode %></td>
+                      <td><%= pmtkey[i].pmtkey %></td>
+                      <td>
+                        <button
+                          class="btn btn-danger"
+                          type="button"
+                          onclick="deletepmtkey(`<%=pmtkey[i]._id%>`)"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="myform">
+          <div class="form-group text-center">
+            <div class="row">
+              <div class="col-md-12 col-sm-12"><h4>Negative Key</h4></div>
+            </div>
+            <br />
+            <div class="row text-center">
+              <div class="col-md-4 col-sm-4">
+                <select name="wx_code" id="wx_code" class="form-control">
+                  <% for(var i=0; i < wxcodelist.length; i++) {%>
+                  <option value="'<%= wxcodelist[i] %>'"
+                    ><%= wxcodelist[i] %></option
+                  >
+                  <%}%>
+                </select>
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <input
+                  type="text"
+                  id="nkey"
+                  class="form-control"
+                  placeholder="Negative key"
+                />
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <button class="btn btn-primary" type="button" id="addnkey">
+                  Add new Negative Keyword
+                </button>
+              </div>
+            </div>
+            <br />
+            <div class="row text-center">
+              <div class="col-md-12" id="tableview">
+                <table
+                  class="table table-striped table-bordered"
+                  id="ndatatable"
+                >
+                  <thead>
+                    <tr>
+                      <th class="text-center">No.</th>
+                      <th class="text-center">WX-code</th>
+                      <th class="text-center">Negative Key</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(var i=0; i < nkey.length; i++) { %>
+                    <tr>
+                      <td><%= i+1 %></td>
+                      <td><%= nkey[i].wxcode %></td>
+                      <td><%= nkey[i].nkey %></td>
+                      <td>
+                        <button
+                          class="btn btn-danger"
+                          type="button"
+                          onclick="deletenkey(`<%=nkey[i]._id%>`)"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="myform">
+          <div class="form-group text-center">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h4>Text Restriction Key</h4>
+              </div>
+            </div>
+            <br />
+            <div class="row text-center">
+              <div class="col-md-4 col-sm-4">
+                <h4>Restriction for text length</h4>
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <select name="wx_txt" id="wx_txt" class="form-control">
+                  <% for(var i=0; i < wxcodelist.length; i++) {%>
+                  <option value="'<%= wxcodelist[i] %>'"
+                    ><%= wxcodelist[i] %></option
+                  >
+                  <%}%>
+                </select>
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <button class="btn btn-primary" type="button" id="addtxtkey">
+                  Add new Keyword
+                </button>
+              </div>
+            </div>
+            <br />
+            <div class="row text-center">
+              <div class="col-md-12" id="tableview">
+                <table
+                  class="table table-striped table-bordered"
+                  id="txtdatatable"
+                >
+                  <thead>
+                    <tr>
+                      <th class="text-center">No.</th>
+                      <th class="text-center">WX-code</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(var i=0; i < txtkey.length; i++) { %>
+                    <tr>
+                      <td><%= i+1 %></td>
+                      <td><%= txtkey[i].wxcode %></td>
+                      <td>
+                        <button
+                          class="btn btn-danger"
+                          type="button"
+                          onclick="deletetxtkey(`<%=txtkey[i]._id%>`)"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/javascripts/jquery-3.3.1.js"></script>
+    <script src="/javascripts/jquery.dataTables.min.js"></script>
+    <script src="/javascripts/dataTables.bootstrap4.min.js"></script>
+    <script src="/javascripts/sweetalert.min.js"></script>
+    <script src="/javascripts/upload.js"></script>
+  </body>
+</html>
